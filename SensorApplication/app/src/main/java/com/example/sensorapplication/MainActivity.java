@@ -9,6 +9,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private Handler handler_;
 
-    private SensorManager seneserManager_;
+    private SensorManager sensorManager_;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,19 +38,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         button_ = (Button) findViewById(R.id.button);
 
-        seneserManager_ = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        sensor_ = seneserManager_.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        gyroscope_ = seneserManager_.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        sensorManager_ = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        sensor_ = sensorManager_.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        gyroscope_ = sensorManager_.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 
-        handler_ = (Handler) ;
+        handler_ = new Handler(Looper.getMainLooper());
 
         button_.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                seneserManager_.registerListener(
+                sensorManager_.registerListener(
                         MainActivity.this,
-                        sensor_,
-//                        gyroscope_,
+//                        sensor_,
+                        gyroscope_,
 //                        SensorManager.SENSOR_DELAY_FASTEST,
                         SensorManager.SENSOR_DELAY_NORMAL);
             }
@@ -131,6 +132,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onPause() {
         super.onPause();
-        seneserManager_.unregisterListener(this);
+        sensorManager_.unregisterListener(this);
     }
 }
